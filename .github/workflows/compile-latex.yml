@@ -25,7 +25,7 @@ jobs:
       - name: Compile Proposal LaTeX
         uses: xu-cheng/latex-action@v3
         with:
-          root_file: proposal/main.tex
+          root_file: main.tex
           working_directory: proposal
           compiler: lualatex
 
