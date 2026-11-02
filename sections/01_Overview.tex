@@ -142,42 +142,6 @@ eスポーツのオンライン観戦需要に関する研究では、観戦者�
 特に特定の選手に注目している観戦者にとっては、その選手の試合予定や対戦相手、試合結果をまとめて確認できる仕組みが役立つと考えられます。
 しかし、トーナメント表や試合結果、ライブ配信などが別々のページやサービスで提供されている場合、観戦者は必要な情報を個別に確認しなければなりません。
 
-\begin{figure}[H]
-  \centering
-  \begin{tikzpicture}
-    \begin{axis}[
-      width=0.9\linewidth,
-      height=6.5cm,
-      xmin=2015.6, xmax=2025.4,
-      xtick={2016,2017,2018,2019,2020,2021,2022,2023,2024,2025},
-      xticklabel style={/pgf/number format/1000 sep={}},
-      ymin=0, ymax=8.5,
-      ytick={0,2,4,6,8},
-      scaled y ticks=false,
-      yticklabel={\pgfmathprintnumber[fixed,precision=0]{\tick}M},
-      ymajorgrids=true,
-      grid style={dashed, gray!30},
-      axis line style={draw=none},
-      tick style={draw=none}
-    ]
-      \addplot[color=blue!60, thick, mark=*, mark options={fill=blue!60}] coordinates {
-        (2016,1.55)
-        (2017,2.10)
-        (2018,2.05)
-        (2019,3.95)
-        (2020,3.85)
-        (2021,4.00)
-        (2022,5.15)
-        (2023,6.40)
-        (2024,6.85)
-        (2025,6.75)
-      };
-    \end{axis}
-  \end{tikzpicture}
-  \caption{League of Legends World Championshipのピーク視聴者数の推移（単位：百万人、出典：\cite{escharts2025}）}
-  \label{fig:line_trend}
-\end{figure}
-
 既存の大会運営プラットフォームには、大会作成、参加者登録、トーナメント設定、勝敗管理などの機能が提供されています。
 既存のプラットフォームにおける運営の効率化だけでなく、観戦者が大会情報とライブ配信を関連付けて確認できる仕組みも重要です。
 特に、小規模から中規模の大会では、専用システムの導入費用や運用費用が負担となる場合もあり、利用しやすい大会運営システムが求められています。
