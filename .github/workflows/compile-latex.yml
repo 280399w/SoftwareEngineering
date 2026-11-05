@@ -5,41 +5,54 @@ on:
     branches: [ "main" ]
     paths:
       - '**/*.tex'
-  pull_request:
-    branches: [ "main" ]
-    paths:
-      - '**/*.tex'
   workflow_dispatch:
 
 permissions:
   contents: write 
 
 jobs:
-  build_proposal:
-    name: Build Proposal PDF
+  build_pdfs:
+    name: Compile and Push PDFs
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # main だけでなく pdf ブランチも取得するために必須
 
-      - name: Compile Proposal LaTeX
+      - name: Merge main into pdf branch
+        run: |
+          # Gitのユーザー設定
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          # pdf ブランチに切り替えて main をマージ
+          git checkout pdf
+          git merge main
+
+      - name: Compile Proposal
         uses: xu-cheng/latex-action@v3
         with:
           root_file: main.tex
           working_directory: proposal
           compiler: lualatex
 
-      # 1. 確認用にPDFをActionsの画面にアップロードする
-      - name: Upload PDF Artifact
-        uses: actions/upload-artifact@v4
+      - name: Compile External Design
+        uses: xu-cheng/latex-action@v3
         with:
-          name: proposal-pdf
-          path: proposal/main.pdf
+          root_file: main.tex
+          working_directory: external-design
+          compiler: lualatex
 
-      # 2. .gitignore を無視して強制的に( -f )コミットする
-      - name: Commit and Push PDF to Repository
-        uses: stefanzweifel/git-auto-commit-action@v5
+      - name: Compile Internal Design
+        uses: xu-cheng/latex-action@v3
         with:
-          commit_message: "docs: 自動生成された proposal/main.pdf を更新"
-          file_pattern: "proposal/main.pdf"
-          add_options: '-f'
+          root_file: main.tex
+          working_directory: internal-design
+          compiler: lualatex
+
+      - name: Push PDFs to pdf branch
+        run: |
+          # 生成されたPDFを強制追加して pdf ブランチにプッシュ
+          git add -f proposal/main.pdf external-design/main.pdf internal-design/main.pdf
+          git commit -m "docs: LaTeX compilation (auto-generated)" || echo "No changes to commit"
+          git push origin pdf
