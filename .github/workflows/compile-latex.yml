@@ -33,4 +33,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "docs: 自動生成された proposal/main.pdf を更新"
-          file_pattern: "proposal/*.pdf"
+          file_pattern: "proposal/main.pdf"
