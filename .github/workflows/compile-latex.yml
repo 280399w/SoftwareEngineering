@@ -29,8 +29,17 @@ jobs:
           working_directory: proposal
           compiler: lualatex
 
+      # 1. 確認用にPDFをActionsの画面にアップロードする
+      - name: Upload PDF Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: proposal-pdf
+          path: proposal/main.pdf
+
+      # 2. .gitignore を無視して強制的に( -f )コミットする
       - name: Commit and Push PDF to Repository
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "docs: 自動生成された proposal/main.pdf を更新"
           file_pattern: "proposal/main.pdf"
+          add_options: '-f'
