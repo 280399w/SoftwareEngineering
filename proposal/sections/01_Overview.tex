@@ -41,7 +41,41 @@
 
 
 さらに、国内eスポーツファン数は2021年の743万人から2024年には967万人に増加し、約30\%増加しています。
-この推移を図\ref{fig:trend}に示します。
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      ybar,
+      width=0.85\linewidth,
+      height=7cm,
+      bar width=1.2cm,
+      symbolic x coords={2020年,2021年,2022年,2023年,2024年},
+      xtick=data,
+      ymin=0, ymax=10000,
+      ytick={0,2000,4000,6000,8000,10000},
+      scaled y ticks=false,
+      yticklabel={\pgfmathprintnumber[fixed,1000 sep={,}]{\tick}},  
+      title={\small （千人）},
+      title style={anchor=east, at={(0,1.02)}, xshift=-0.5cm},
+      nodes near coords,
+      nodes near coords style={/pgf/number format/fixed, /pgf/number format/1000 sep={,}},
+      ymajorgrids=true,
+      grid style={dashed, gray!50},
+      enlarge x limits=0.15
+    ]
+      \addplot[fill=violet!70!black, draw=none] coordinates {
+        (2020年,6859)
+        (2021年,7434)
+        (2022年,7759)
+        (2023年,8560)
+        (2024年,9673)
+      };
+    \end{axis}
+  \end{tikzpicture}
+  \caption{日本国内eスポーツファン数の推移（出典：\cite{jeSU2026}）}
+  \label{fig:trend}
+\end{figure}
 
 大会開催数についても、ゲーム大会運営プラットフォーム「Tonamel」内で開催されたゲーム大会は、2018年の年間898大会から2021年には年間10,094大会へと増加したことが報告されています。\cite{kayakku}
 
@@ -86,40 +120,7 @@
 
 このことから、ゲーム大会を開催・運営する機会が拡大していることから大会管理のための必要性が増加していることが伺えます。 このことから、ゲーム大会を開催・運営する機会が拡大しているら大会管理のための必要性が増加していることが伺えます。
 
-\begin{figure}[H]
-  \centering
-  \begin{tikzpicture}
-    \begin{axis}[
-      ybar,
-      width=0.85\linewidth,
-      height=7cm,
-      bar width=1.2cm,
-      symbolic x coords={2020年,2021年,2022年,2023年,2024年},
-      xtick=data,
-      ymin=0, ymax=10000,
-      ytick={0,2000,4000,6000,8000,10000},
-      scaled y ticks=false,
-      yticklabel={\pgfmathprintnumber[fixed,1000 sep={,}]{\tick}},  
-      title={\small （千人）},
-      title style={anchor=east, at={(0,1.02)}, xshift=-0.5cm},
-      nodes near coords,
-      nodes near coords style={/pgf/number format/fixed, /pgf/number format/1000 sep={,}},
-      ymajorgrids=true,
-      grid style={dashed, gray!50},
-      enlarge x limits=0.15
-    ]
-      \addplot[fill=violet!70!black, draw=none] coordinates {
-        (2020年,6859)
-        (2021年,7434)
-        (2022年,7759)
-        (2023年,8560)
-        (2024年,9673)
-      };
-    \end{axis}
-  \end{tikzpicture}
-  \caption{日本国内eスポーツファン数の推移（出典：\cite{jeSU2026}）}
-  \label{fig:trend}
-\end{figure}
+
 
 一方、大会運営では参加者情報や試合結果など、さまざまな情報を管理する必要があります。
 「Tonamel」などの既存の大会運営プラットフォームには、参加登録やトーナメント管理などの機能がありますが、参加者への連絡にDiscordやメール、試合結果の集計にExcelやGoogleスプレッドシートなど、別のツールを併用する場合もあります。
