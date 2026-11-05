@@ -34,21 +34,21 @@ jobs:
         with:
           root_file: main.tex
           working_directory: proposal
-          compiler: lualatex
+          compiler: latexmk
 
       - name: Compile External Design
         uses: xu-cheng/latex-action@v3
         with:
           root_file: main.tex
           working_directory: external-design
-          compiler: lualatex
+          compiler: latexmk
 
       - name: Compile Internal Design
         uses: xu-cheng/latex-action@v3
         with:
           root_file: main.tex
           working_directory: internal-design
-          compiler: lualatex
+          compiler: latexmk
 
       - name: Push PDFs to pdf branch
         run: |
