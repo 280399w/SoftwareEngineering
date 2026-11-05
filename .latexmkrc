@@ -1,1 +1,0 @@
-$pdflatex = 'lualatex -file-line-error -interaction=nonstopmode %O %S';

@@ -33,6 +33,7 @@ jobs:
           root_file: main.tex
           working_directory: proposal
           compiler: latexmk
+          args: -lualatex
 
       - name: Compile External Design
         uses: xu-cheng/latex-action@v3
@@ -40,6 +41,7 @@ jobs:
           root_file: main.tex
           working_directory: external-design
           compiler: latexmk
+          args: -lualatex
 
       - name: Compile Internal Design
         uses: xu-cheng/latex-action@v3
@@ -47,6 +49,7 @@ jobs:
           root_file: main.tex
           working_directory: internal-design
           compiler: latexmk
+          args: -lualatex
 
       - name: Push PDFs to pdf branch
         run: |
