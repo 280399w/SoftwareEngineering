@@ -1,3 +1,1 @@
-$lualatex = 'lualatex %O %S';
-$pdf_mode = 4;
-$max_repeat = 5;
+$pdflatex = 'lualatex -file-line-error -interaction=nonstopmode %O %S';
