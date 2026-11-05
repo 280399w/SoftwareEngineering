@@ -1,0 +1,37 @@
+# LaTeX 中間ファイル・ビルド生成物
+*.aux
+*.log
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+*.bbl
+*.blg
+*.out
+*.nav
+*.snm
+*.vrb
+*.dvi
+*.bcf
+*.run.xml
+
+# Git上での自動ビルドを基本とするため除外
+*.pdf
+
+# GitHubに自動コミットさせたいドキュメントPDFは追跡対象に含める
+!proposal/main.pdf
+!external-design/main.pdf
+!internal-design/main.pdf
+
+# 挿入用画像として使っているPDFファイルは追跡対象に含める
+!images/*.pdf
+!figures/*.pdf
+
+# OS・エディタの一時ファイル
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
