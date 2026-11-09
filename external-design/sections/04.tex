@@ -1,0 +1,170 @@
+\documentclass[a4paper,10pt]{ltjsarticle}
+
+% =====================================
+% パッケージ設定
+% =====================================
+\usepackage{geometry}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage[table]{xcolor}
+\usepackage{setspace}
+\usepackage{luatexja}
+
+% =====================================
+% ページ設定
+% =====================================
+\geometry{
+    top=15mm,
+    bottom=12mm,
+    left=17mm,
+    right=17mm
+}
+
+% 行間
+\setstretch{1.25}
+
+% 段落設定
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+
+% 表の設定
+\renewcommand{\arraystretch}{1.35}
+\setlength{\tabcolsep}{5pt}
+
+% 色設定
+\definecolor{headingblue}{RGB}{55,115,190}
+\definecolor{tableblue}{RGB}{215,232,245}
+
+% 表の列幅設定
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% =====================================
+% 文書開始
+% =====================================
+\begin{document}
+
+% =====================================
+% タイトル
+% =====================================
+{\Large\color{headingblue}
+第４部 ネットワーク設計書
+}
+
+\vspace{12pt}
+
+% =====================================
+% 1. ネットワーク構成
+% =====================================
+{\large\color{headingblue}
+1. ネットワーク構成
+}
+
+本システムはインターネットを介して利用する Web システムとする。
+主催者、競技者および観戦者は、スマートフォンまたは PC の Web ブラウザからアクセスする。
+Web サーバが画面要求を受け付け、バックエンドの Django が大会・競技者・試合等の処理を行い、MySQL データベースに情報を保存する。
+
+提案書では、メインサーバーに AWS EC2、データベースサーバーに AWS RDS を利用する構成が想定されている。
+Web サーバーは Apache または Nginx、フロントエンドは Next.js（TypeScript）、バックエンドは Django、データベースは MySQL とする。
+
+% =====================================
+% 表1
+% =====================================
+\begin{tabularx}{\textwidth}{|
+>{\raggedright\arraybackslash}p{0.34\textwidth}|
+Y|
+Y|}
+\hline
+\rowcolor{tableblue}
+\textbf{構成要素} &
+\textbf{想定する機器・サービス} &
+\textbf{役割} \\
+\hline
+
+利用者端末 &
+スマートフォン・PC &
+Web ブラウザからシステムを利用する。 \\
+\hline
+
+インターネット &
+インターネット回線 &
+利用者端末とシステム間の通信を行う。 \\
+\hline
+
+Web サーバ &
+Apache または Nginx &
+HTTP(S) リクエストを受け付け、Web アプリケーションへ中継する。 \\
+\hline
+
+アプリケーションサーバ &
+AWS EC2（提案書記載：4～6台） &
+Next.js/Django による画面・業務処理を提供する。台数と役割分担は要確定。 \\
+\hline
+
+データベースサーバ &
+AWS RDS（提案書記載：1台）、MySQL &
+大会、選手、参加登録、試合結果等の情報を保存する。 \\
+\hline
+\end{tabularx}
+
+\vspace{25pt}
+
+% =====================================
+% 2. ネットワーク接続形態
+% =====================================
+{\large\color{headingblue}
+2. ネットワーク接続形態
+}
+
+セキュリティおよび運用面では、ログイン情報と個人情報を適切に管理し、利用者の権限に応じて操作を制限する。
+また、データベースのバックアップと復元確認、不正アクセス対策およびセキュリティ更新を行う。
+
+利用者端末と Web サーバ間はインターネットを経由して接続する。
+通信方式は Web ブラウザで利用する HTTPS を想定し、通信の暗号化や証明書の設定などの詳細は運用環境の設計時に確定する。
+
+Web サーバおよびアプリケーションサーバは、受信した要求に応じて画面表示や業務処理を行う。
+データベースへの接続はアプリケーションサーバから行い、利用者端末からデータベースへ直接接続させない。
+
+ライブ配信は本システム内で映像を配信せず、主催者が登録した外部配信サービスの URL へ利用者を誘導する。
+外部配信サービスとの API 連携や配信状態の自動取得は、提案書では確定していない。
+
+% =====================================
+% 表2
+% =====================================
+\begin{tabularx}{\textwidth}{|
+>{\raggedright\arraybackslash}p{0.34\textwidth}|
+>{\raggedright\arraybackslash}p{0.34\textwidth}|
+Y|}
+\hline
+\rowcolor{tableblue}
+\textbf{区分} &
+\textbf{ソフトウェア} &
+\textbf{用途} \\
+\hline
+
+フロントエンド &
+Next.js（TypeScript） &
+Web 画面の構築 \\
+\hline
+
+バックエンド &
+Django &
+API および大会・試合管理等の処理 \\
+\hline
+
+Web サーバ &
+Apache または Nginx &
+Web リクエストの受付・中継 \\
+\hline
+
+データベース &
+MySQL &
+大会・選手・試合結果等のデータ管理 \\
+\hline
+
+クラウド基盤 &
+AWS EC2、AWS RDS（提案書記載） &
+アプリケーションおよびデータベースの稼働環境 \\
+\hline
+\end{tabularx}
+
+\end{document}
