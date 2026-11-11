@@ -28,7 +28,7 @@
 
 # 挿入用画像として使っているPDFファイルは追跡対象に含める
 !images/*.pdf
-!figures/*.pdf
+!figures/**/*.pdf
 
 # OS・エディタの一時ファイル
 .DS_Store
