@@ -15,8 +15,12 @@
 \usepackage{pgf-pie}
 \usepackage{pgfplots}
 \usepackage{tabularx}
+\usepackage[table]{xcolor} % 表の着色機能（\rowcolor）を有効化
 \pgfplotsset{compat=1.18}
 \usetikzlibrary{shapes.geometric, arrows.meta, positioning}
+
+% 色の定義
+\definecolor{tableblue}{rgb}{0.8, 0.9, 1.0} % 薄い青色の定義
 
 % --- タイトル設定 ---
 \title{プロジェクト提案書}
@@ -64,11 +68,13 @@
 \clearpage
 
 % --- 各章の読み込み ---
-\input{sections/00_First.tex}
-\input{sections/01_workflow.tex}
-\input{sections/UserInterface.tex}
-% \input{sections/03_DataTable.tex}
-% \input{sections/04.tex}
+\input{sections/01_First.tex}   % はじめに
+\input{sections/02_Workflow.tex}  % 業務の流れ
+\input{sections/03_SubsystemOverview.tex} % サブシステムの概要
+\input{sections/04_UserInterface.tex}  % UI設計
+% \input{sections/03_DataTable.tex} % 運用・保守
+% \input{sections/05_User.tex}  % DB設計
+\input{sections/07_NetworkDesign.tex} % ネットワーク設計
 % \input{sections/05_User.tex}
 % \input{sections/06_Hardware_Software.tex}
 % \input{sections/07_OperationMaintenance.tex}

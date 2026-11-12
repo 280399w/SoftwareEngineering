@@ -22,8 +22,9 @@
   \centering
   \caption{業務の基本的な流れ}
   \label{tab:hardware}
-  \begin{tabular}{|l|l|l|l|}
+  \begin{tabularx}{\linewidth}{|l|l|l|X|}
     \hline
+    \rowcolor{tableblue}
     \multicolumn{1}{|c|}{順序} & \multicolumn{1}{c|}{担当} & \multicolumn{1}{c|}{業務内容} & \multicolumn{1}{c|}{システムの処理} \\ \hline
     1 & 主催者  & 大会情報の登録  & 大会情報を受け取り、データベースに保存して公開する。 \\ \hline
     2 & 競技者 & 大会への参加登録 & 入力内容・形式・重複を確認し、競技者と参加情報を保存する。 \\ \hline
@@ -31,5 +32,12 @@
     4 & 主催者 & トーナメント作成 & 登録競技者と大会形式に基づき対戦組み合わせを作成する。 \\ \hline
     5 & 主催者/競技者 & 試合結果の登録・確認 & 結果を確認して確定し、試合情報と大会進行状況を更新する。 \\ \hline
     6 & 主催者/観戦者 & 大会情報の閲覧 & 対戦相手、試合予定、結果、注目選手情報などを表示する。 \\ \hline
-  \end{tabular}
+  \end{tabularx}
 \end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{figures/02/business_flow.pdf}
+    \caption{業務の基本的な流れ}
+    \label{fig:business_flow}
+\end{figure}
