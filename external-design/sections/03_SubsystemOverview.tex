@@ -394,65 +394,89 @@
     \label{fig:notice_fav_stream_ui}
 \end{figure}
 
+
 \subsection{料金プラン管理サブシステム}
 
 大会単位の料金プランおよび有料オプションの申込を受け付け、
 契約内容と契約状況を管理する。
+人数別プランと配信掲載は大会単位で適用し、
+広告非表示はアカウント単位でサイト全体に適用する月額契約とする。
+料金の金額はシステム提案書第2.0版7.4「収益」に基づく。
 
 \subsubsection*{(a) 料金プラン・有料オプション選択機能}
 \begin{description}
     \item[入力：]対象大会、人数別料金プラン、配信掲載オプション、
-                広告非表示オプション
+                広告非表示の設定
     \item[出力：]選択した料金プランおよび有料オプション、
-                適用単位、料金
-    \item[処理：]大会契約では対象大会の人数別プランと配信掲載を選択する。
-                人数別プランは小規模（32人まで、1,000円）、
-                中規模（64人まで、1,500円）、
+                選択状態、適用単位
+    \item[処理：]主催者は対象大会に対して人数別料金プランを選択する。
+                人数別料金プランは、小規模（競技者32人まで、1,000円）、
+                中規模（競技者64人まで、1,500円）、
                 大規模（人数無制限、3,000円）とする。
-                人数別プランと配信掲載は大会単位とし、
-                申込完了から大会終了まで適用する。
-                配信掲載は300円・600円・900円の枠から選択する。
-                広告非表示はアカウント単位でサイト全体に適用する
+                選択したプランは大会単位で適用し、
+                申込完了から大会終了までを適用期間とする。
+                また、配信掲載は主催者を対象とし、
+                大会単位で300円・600円・900円の枠から選択する。
+                広告非表示はアカウント単位でサイト全体に適用し、
                 月額300円の契約とする。
+                選択したプランやオプションは、
+                選択中のカードを青い枠・背景と選択マークで表示する。
 \end{description}
 
-\begin{table}[H]
+\begin{figure}[H]
     \centering
-    \caption{人数別料金プラン}
-    \begin{tabular}{|l|l|r|}
-        \hline
-        プラン & 参加人数 & 料金 \\ \hline
-        小規模 & 32人まで & 1,000円 \\ \hline
-        中規模 & 64人まで & 1,500円 \\ \hline
-        大規模 & 人数無制限 & 3,000円 \\ \hline
-    \end{tabular}
-    \label{tab:pricing_plan}
-\end{table}
+    \includegraphics[width=0.42\linewidth]{figures/03/3-6_plan.png}
+    \caption{人数別料金プラン画面イメージ}
+    \label{fig:pricing_plan_ui}
+\end{figure}
 
-\begin{table}[H]
+\begin{figure}[H]
     \centering
-    \caption{有料オプション}
-    \begin{tabular}{|l|l|l|}
-        \hline
-        オプション & 適用単位 & 料金 \\ \hline
-        配信掲載 & 大会単位 & 300円・600円・900円 \\ \hline
-        広告非表示 & アカウント単位 & 月額300円 \\ \hline
-    \end{tabular}
-    \label{tab:paid_options}
-\end{table}
+    \includegraphics[width=\linewidth]{figures/03/3-6_options.png}
+    \caption{有料オプション画面イメージ}
+    \label{fig:pricing_options_ui}
+\end{figure}
 
-\subsubsection*{(b) 契約内容確認・契約状況管理機能}
+\subsubsection*{(b) 契約内容確認機能}
 \begin{description}
     \item[入力：]選択した料金プラン、有料オプション、
                 対象大会、適用期間
-    \item[出力：]契約内容、合計金額、適用期間、契約状態
-    \item[処理：]大会契約では対象大会の人数別料金、掲載料、
-                適用期間および合計金額を確認する。
-                広告非表示は別の月額契約として、
-                サイト全体への適用と利用期間を確認する。
-                金額と適用範囲を確認して申込を受け付ける。
-                申込時に確定する期間を確認画面と契約状況画面に表示する。
-                大会契約と月額契約を分けて管理し、
-                利用中などの契約状態を表示する。
+    \item[出力：]契約内容、料金の内訳、合計金額、適用期間
+    \item[処理：]大会契約では、対象大会、選択した人数別料金プラン、
+                配信掲載料、適用期間および合計金額を表示する。
+                広告非表示は大会契約とは別の月額契約として扱い、
+                サイト全体への適用範囲、月額300円および利用期間を表示する。
+                大会料金と月額料金を分けて確認できるようにし、
+                金額と適用範囲を確認したうえで申込を受け付ける。
+                図に示す利用期間は表示例とし、
+                実際の申込時に確定する期間を確認画面に表示する。
                 支払方法と決済結果との連動は内部設計で確定する。
 \end{description}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{figures/03/3-6_confirmation.png}
+    \caption{契約内容確認画面イメージ}
+    \label{fig:pricing_confirmation_ui}
+\end{figure}
+
+\subsubsection*{(c) 契約状況確認機能}
+\begin{description}
+    \item[入力：]利用者ID、契約情報
+    \item[出力：]契約内容、適用範囲、利用期間、契約状態
+    \item[処理：]大会契約と広告非表示の月額契約を分けて管理する。
+                大会契約では、対象大会、選択したプラン、
+                配信掲載料、大会単位の金額および適用期間を表示する。
+                広告非表示では、アカウント全体への適用範囲、
+                月額料金および申込時に確認した利用期間を表示する。
+                また、それぞれの契約状態を管理し、
+                利用中などの状態を表示する。
+                利用期間は契約内容確認画面に表示した値と同じものを表示する。
+\end{description}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{figures/03/3-6_status.png}
+    \caption{契約状況画面イメージ}
+    \label{fig:pricing_status_ui}
+\end{figure}
