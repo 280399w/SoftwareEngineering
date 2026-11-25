@@ -8,7 +8,7 @@
     \label{fig:er_diagram}
 \end{figure}
 
-各テーブルの定義を以下の表\ref{tab:users_table}～\ref{tab:notifications_table}に示す。
+各テーブルの定義を以下の表\ref{tab:users_table}～\ref{tab:user_subscriptions_table}に示す。
 
 \noindent\textbf{利用者テーブル（users）}
 \begin{table}[H]
@@ -29,7 +29,6 @@
     \end{tabularx}
 \end{table}
 
-
 \noindent\textbf{選手テーブル（players）}
 \begin{table}[H]
     \centering
@@ -39,10 +38,10 @@
         \hline
         \rowcolor{tableblue}
         \multicolumn{1}{|c|}{カラム名} & \multicolumn{1}{c|}{PK} & \multicolumn{1}{c|}{FK} & \multicolumn{1}{c|}{その他の制約} & \multicolumn{1}{c|}{論理データ型} & \multicolumn{1}{c|}{説明} \\ \hline
-        player\_id & 〇 &  & not null, unique & integer & 選手を一意に識別する番号 \\ \hline
-        player\_name &  &  & not null & varchar(50) & 選手名（大会上で表示されるプレイヤー名） \\ \hline
+        id & 〇 &  & not null, unique & integer & 選手を一意に識別する番号 \\ \hline
+        player\_name &  &  & not null & varchar(50) & 選手名 \newline（大会上で表示されるプレイヤー名） \\ \hline
         user\_id &  & 〇 & not null, unique & integer & 利用者テーブルのID \\ \hline
-        profile & & & & text & 公開プロフィール情報（自己紹介・SNS等） \\ \hline
+        profile & & & & text & 公開プロフィール情報 \newline（自己紹介・SNS等） \\ \hline
     \end{tabularx}
 \end{table}
 
@@ -60,13 +59,15 @@
         title & & & not null & varchar(200) & 大会名 \\ \hline
         game\_title & & & not null & varchar(100) & 対象ゲーム \\ \hline
         event\_date & & & not null & datetime & 開催日時 \\ \hline
+        event\_end\_date & & & not null & datetime & 開催終了予定日時 \\ \hline
         venue & & & not null & varchar(200) & 開催場所（URLまたは会場名） \\ \hline
         max\_participants & & & not null & integer & 最大参加人数 \\ \hline
-        format\_type & & & not null & varchar(30) & 大会形式（シングルエリミネーション等） \\ \hline
+        format\_type & & & not null & varchar(30) & 大会形式 \newline（シングルエリミネーション等） \\ \hline
         entry\_start\_date & & & not null & datetime & 参加受付開始日時 \\ \hline
         entry\_end\_date & & & not null & datetime & 参加受付終了日時 \\ \hline
-        status & & & not null & varchar(20) & 開催状態（予定・開催中・終了済み） \\ \hline
-        stream\_url & & & & varchar(500) & 配信URL \\ \hline
+        status & & & not null & varchar(20) & 開催状態（予定・開催中・終了済み・中止） \\ \hline
+        stream\_url & & & & varchar(500) & 大会全体の配信URL \\ \hline
+        archive\_url & & & & varchar(500) & 大会全編のアーカイブ動画URL \\ \hline
     \end{tabularx}
 \end{table}
 
@@ -80,10 +81,10 @@
         \rowcolor{tableblue}
         \multicolumn{1}{|c|}{カラム名} & \multicolumn{1}{c|}{PK} & \multicolumn{1}{c|}{FK} & \multicolumn{1}{c|}{その他の制約} & \multicolumn{1}{c|}{論理データ型} & \multicolumn{1}{c|}{説明} \\ \hline
         id & 〇 & & not null, unique & integer & 参加情報を一意に識別する番号 \\ \hline
-        tournament\_id & & 〇 & not null & integer & 参加する大会のID \\ \hline
-        player\_id & & 〇 & not null & integer & 参加する選手のID \\ \hline
+        tournament\_id & & 〇 & not null, UQ1 & integer & 参加する大会のID \newline（player\_idと複合一意） \\ \hline
+        player\_id & & 〇 & not null, UQ1 & integer & 参加する選手のID \newline（tournament\_idと複合一意） \\ \hline
         registered\_at & & & not null & datetime & 参加登録日時 \\ \hline
-        status & & & not null & varchar(20) & 受付・登録状態（承認待ち・参加確定・キャンセル） \\ \hline
+        status & & & not null & varchar(20) & 受付・登録状態 \newline（承認待ち・参加確定・キャンセル） \\ \hline
     \end{tabularx}
 \end{table}
 
@@ -112,11 +113,17 @@
         \rowcolor{tableblue}
         \multicolumn{1}{|c|}{カラム名} & \multicolumn{1}{c|}{PK} & \multicolumn{1}{c|}{FK} & \multicolumn{1}{c|}{その他の制約} & \multicolumn{1}{c|}{論理データ型} & \multicolumn{1}{c|}{説明} \\ \hline
         id & 〇 & & not null, unique & integer & 試合を一意に識別する番号 \\ \hline
-        bracket\_id & & 〇 & not null & integer & トーナメントID \\ \hline
-        round\_number & & & not null & integer & ラウンド数（何回戦か） \\ \hline
-        match\_number & & & not null & integer & 試合番号 \\ \hline
-        status & & & not null & varchar(20) & 試合状態（予定・進行中・完了） \\ \hline
+        bracket\_id & & 〇 & not null, UQ1 & integer & トーナメントID \\ \hline
+        round\_number & & & not null, UQ1 & integer & ラウンド数（何回戦か） \\ \hline
+        match\_number & & & not null, UQ1 & integer & 試合番号 \\ \hline
+        status & & & not null & varchar(20) & 試合状態（未開始・進行中・結果承認待ち・修正依頼中・終了・中止） \\ \hline
+        stream\_status & & & not null & varchar(20) & 配信状態（未配信・配信中・配信終了） \\ \hline
+        reported\_by & & 〇 & & integer & 試合結果を入力した選手のID \newline（players.id） \\ \hline
+        revision\_reason & & & & text & 結果修正依頼時の理由 \newline（修正依頼時のみ使用） \\ \hline
+        stream\_url & & & & varchar(500) & 試合ごとのライブ配信URL \\ \hline
+        archive\_url & & & & varchar(500) & 試合のアーカイブ動画URL \\ \hline
         scheduled\_time & & & & datetime & 試合予定日時 \\ \hline
+        completed\_at & & & & datetime & 試合終了日時 \\ \hline
     \end{tabularx}
 \end{table}
 
@@ -130,29 +137,13 @@
         \rowcolor{tableblue}
         \multicolumn{1}{|c|}{カラム名} & \multicolumn{1}{c|}{PK} & \multicolumn{1}{c|}{FK} & \multicolumn{1}{c|}{その他の制約} & \multicolumn{1}{c|}{論理データ型} & \multicolumn{1}{c|}{説明} \\ \hline
         id & 〇 & & not null, unique & integer & 試合と競技者の対応識別番号 \\ \hline
-        match\_id & & 〇 & not null & integer & 試合ID \\ \hline
-        player\_id & & 〇 & not null & integer & 選手ID \\ \hline
-        position\_num & & & not null & integer & 対戦枠（1P枠・2P枠など） \\ \hline
-        score & & & & integer & 獲得した得点・ラウンド数 \\ \hline
-        is\_winner & & & & boolean & 勝敗（trueで勝利、nullで未定） \\ \hline
-    \end{tabularx}
-\end{table}
-
-\noindent\textbf{試合結果確認テーブル（match\_confirmations）}
-\begin{table}[H]
-    \centering
-    \caption{試合結果確認テーブル}
-    \label{tab:match_confirmations_table}
-    \begin{tabularx}{\linewidth}{|l|c|c|l|l|X|}
-        \hline
-        \rowcolor{tableblue}
-        \multicolumn{1}{|c|}{カラム名} & \multicolumn{1}{c|}{PK} & \multicolumn{1}{c|}{FK} & \multicolumn{1}{c|}{その他の制約} & \multicolumn{1}{c|}{論理データ型} & \multicolumn{1}{c|}{説明} \\ \hline
-        id & 〇 & & not null, unique & integer & 結果確認を一意に識別する番号 \\ \hline
-        match\_id & & 〇 & not null & integer & 試合ID \\ \hline
-        player\_id & & 〇 & not null & integer & 結果を入力・確認した選手ID \\ \hline
-        reported\_result & & & not null & varchar(255) & 入力された試合結果の内容 \\ \hline
-        status & & & not null & varchar(20) & 確認状態（未確認・承認・異議あり） \\ \hline
-        confirmed\_at & & & & datetime & 確認完了日時 \\ \hline
+        match\_id & & 〇 & not null, UQ1, UQ2 & integer & 試合ID（UQ1：player\_id、\newline UQ2：position\_numと複合一意） \\ \hline
+        player\_id & & 〇 & not null, UQ1 & integer & 選手ID（match\_idと複合一意） \\ \hline
+        position\_num & & & not null, UQ2 & integer & 対戦枠（1P枠・2P枠など） \newline（match\_idと複合一意） \\ \hline
+        score & & & not null & integer & 獲得した得点・ラウンド数 \newline（初期値0） \\ \hline
+        result & & & not null & varchar(20) & 勝敗（未確定・勝利・敗北・引分） \\ \hline
+        is\_approved & & & not null & boolean & 試合結果の承認フラグ \newline（trueで承認済み。結果の入力者は入力時にtrue） \\ \hline
+        approved\_at & & & & datetime & 試合結果の承認日時 \\ \hline
     \end{tabularx}
 \end{table}
 
@@ -166,8 +157,8 @@
         \rowcolor{tableblue}
         \multicolumn{1}{|c|}{カラム名} & \multicolumn{1}{c|}{PK} & \multicolumn{1}{c|}{FK} & \multicolumn{1}{c|}{その他の制約} & \multicolumn{1}{c|}{論理データ型} & \multicolumn{1}{c|}{説明} \\ \hline
         id & 〇 & & not null, unique & integer & お気に入り登録の識別番号 \\ \hline
-        user\_id & & 〇 & not null & integer & 登録した利用者ID \\ \hline
-        player\_id & & 〇 & not null & integer & お気に入り対象の選手ID \\ \hline
+        user\_id & & 〇 & not null, UQ1 & integer & 登録した利用者ID \newline（player\_idと複合一意） \\ \hline
+        player\_id & & 〇 & not null, UQ1 & integer & お気に入り対象の選手ID \newline（user\_idと複合一意） \\ \hline
         registered\_at & & & not null & datetime & 登録日時 \\ \hline
     \end{tabularx}
 \end{table}
@@ -187,5 +178,65 @@
         content & & & not null & text & 通知内容のテキスト \\ \hline
         sent\_at & & & not null & datetime & 送信日時 \\ \hline
         status & & & not null & varchar(20) & 送信状態（送信済み・エラー等） \\ \hline
+    \end{tabularx}
+\end{table}
+
+\noindent\textbf{料金プランマスタ（plans）}
+\begin{table}[H]
+    \centering
+    \caption{料金プランマスタ}
+    \label{tab:plans_table}
+    \begin{tabularx}{\linewidth}{|l|c|c|l|l|X|}
+        \hline
+        \rowcolor{tableblue}
+        \multicolumn{1}{|c|}{カラム名} & \multicolumn{1}{c|}{PK} & \multicolumn{1}{c|}{FK} & \multicolumn{1}{c|}{その他の制約} & \multicolumn{1}{c|}{論理データ型} & \multicolumn{1}{c|}{説明} \\ \hline
+        id & 〇 & & not null, unique & integer & 料金プランを一意に識別する番号 \\ \hline
+        name & & & not null & varchar(100) & プラン名 \newline（小規模大会プラン・広告非表示等） \\ \hline
+        plan\_type & & & not null & varchar(30) & プラン種別 \newline（大会プラン・配信掲載・月額プラン） \\ \hline
+        price & & & not null & integer & 料金（円） \\ \hline
+        max\_players & & & & integer & 参加上限人数\newline（大会プランで値なしは人数無制限、 \newline 他プランは未使用） \\ \hline
+        description & & & & text & プランの説明文 \\ \hline
+        is\_active & & & not null & boolean & 提供中フラグ（falseで新規受付停止） \\ \hline
+    \end{tabularx}
+\end{table}
+
+\noindent\textbf{大会契約テーブル（tournament\_contracts）}
+\begin{table}[H]
+    \centering
+    \caption{大会契約テーブル}
+    \label{tab:tournament_contracts_table}
+    \begin{tabularx}{\linewidth}{|l|c|c|l|l|X|}
+        \hline
+        \rowcolor{tableblue}
+        \multicolumn{1}{|c|}{カラム名} & \multicolumn{1}{c|}{PK} & \multicolumn{1}{c|}{FK} & \multicolumn{1}{c|}{その他の制約} & \multicolumn{1}{c|}{論理データ型} & \multicolumn{1}{c|}{説明} \\ \hline
+        id & 〇 & & not null, unique & integer & 大会契約を一意に識別する番号 \\ \hline
+        tournament\_id & & 〇 & not null & integer & 対象大会のID \\ \hline
+        plan\_id & & 〇 & not null & integer & 契約した料金プラン・オプションのID \\ \hline
+        price & & & not null & integer & 契約時点の料金（円） \\ \hline
+        payment\_status & & & not null & varchar(20) & 決済状態 \newline（未決済・決済済み・キャンセル） \\ \hline
+        payment\_method & & & & varchar(30) & 支払方法 \\ \hline
+        transaction\_id & & & & varchar(255) & 決済取引ID \newline（カード番号等は非保持） \\ \hline
+        contracted\_at & & & not null & datetime & 契約日時 \\ \hline
+    \end{tabularx}
+\end{table}
+
+\noindent\textbf{アカウント月額契約テーブル（user\_subscriptions）}
+\begin{table}[H]
+    \centering
+    \caption{アカウント月額契約テーブル}
+    \label{tab:user_subscriptions_table}
+    \begin{tabularx}{\linewidth}{|l|c|c|l|l|X|}
+        \hline
+        \rowcolor{tableblue}
+        \multicolumn{1}{|c|}{カラム名} & \multicolumn{1}{c|}{PK} & \multicolumn{1}{c|}{FK} & \multicolumn{1}{c|}{その他の制約} & \multicolumn{1}{c|}{論理データ型} & \multicolumn{1}{c|}{説明} \\ \hline
+        id & 〇 & & not null, unique & integer & 月額契約を一意に識別する番号 \\ \hline
+        user\_id & & 〇 & not null & integer & 契約した利用者のID \\ \hline
+        plan\_id & & 〇 & not null & integer & 契約した月額プランのID \\ \hline
+        price & & & not null & integer & 契約時点の料金（円） \\ \hline
+        status & & & not null & varchar(20) & 契約状態 \newline（利用中・解約済み・期限切れ） \\ \hline
+        payment\_method & & & & varchar(30) & 支払方法 \\ \hline
+        transaction\_id & & & & varchar(255) & 決済取引ID \newline（カード番号等は非保持） \\ \hline
+        started\_at & & & not null & datetime & 利用開始日時 \\ \hline
+        expires\_at & & & not null & datetime & 有効期限日時 \\ \hline
     \end{tabularx}
 \end{table}
