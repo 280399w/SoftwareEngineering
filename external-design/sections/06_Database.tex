@@ -65,7 +65,7 @@
         format\_type & & & not null & varchar(30) & 大会形式 \newline（シングルエリミネーション等） \\ \hline
         entry\_start\_date & & & not null & datetime & 参加受付開始日時 \\ \hline
         entry\_end\_date & & & not null & datetime & 参加受付終了日時 \\ \hline
-        status & & & not null & varchar(20) & 開催状態（予定・開催中・終了済み・中止） \\ \hline
+        status & & & not null & varchar(20) & 開催状態（開催予定・開催中・終了済み・中止） \\ \hline
         stream\_url & & & & varchar(500) & 大会全体の配信URL \\ \hline
         archive\_url & & & & varchar(500) & 大会全編のアーカイブ動画URL \\ \hline
     \end{tabularx}
@@ -85,6 +85,8 @@
         player\_id & & 〇 & not null, UQ1 & integer & 参加する選手のID \newline（tournament\_idと複合一意） \\ \hline
         registered\_at & & & not null & datetime & 参加登録日時 \\ \hline
         status & & & not null & varchar(20) & 受付・登録状態 \newline（承認待ち・参加確定・キャンセル） \\ \hline
+        is\_checked\_in & & & not null & boolean & 当日受付の状態（trueで受付済み。初期値false） \\ \hline
+        checked\_in\_at & & & & datetime & 当日受付日時 \\ \hline
     \end{tabularx}
 \end{table}
 
@@ -178,6 +180,25 @@
         content & & & not null & text & 通知内容のテキスト \\ \hline
         sent\_at & & & not null & datetime & 送信日時 \\ \hline
         status & & & not null & varchar(20) & 送信状態（送信済み・エラー等） \\ \hline
+    \end{tabularx}
+\end{table}
+
+\noindent\textbf{受付修正履歴テーブル（checkin\_logs）}
+\begin{table}[H]
+    \centering
+    \caption{受付修正履歴テーブル}
+    \label{tab:checkin_logs_table}
+    \begin{tabularx}{\linewidth}{|l|c|c|l|l|X|}
+        \hline
+        \rowcolor{tableblue}
+        \multicolumn{1}{|c|}{カラム名} & \multicolumn{1}{c|}{PK} & \multicolumn{1}{c|}{FK} & \multicolumn{1}{c|}{その他の制約} & \multicolumn{1}{c|}{論理データ型} & \multicolumn{1}{c|}{説明} \\ \hline
+        id & 〇 & & not null, unique & integer & 修正履歴を一意に識別する番号 \\ \hline
+        entry\_id & & 〇 & not null & integer & 修正した参加情報のID \\ \hline
+        operated\_by & & 〇 & not null & integer & 修正した主催者の利用者ID \\ \hline
+        before\_value & & & not null & boolean & 修正前の受付状態 \\ \hline
+        after\_value & & & not null & boolean & 修正後の受付状態 \\ \hline
+        reason & & & not null & text & 修正の理由 \\ \hline
+        operated\_at & & & not null & datetime & 修正日時 \\ \hline
     \end{tabularx}
 \end{table}
 
